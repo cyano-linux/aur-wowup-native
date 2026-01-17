@@ -1,11 +1,11 @@
 # Maintainer: Cyano Hao <c@cyano.cn>
 
-_electron=electron30
+_electron=electron39
 _electronver=$(</usr/lib/$_electron/version)
 
 _pkgname=WowUp
 pkgname=${_pkgname,,}-native
-_pkgver=2.20.0
+_pkgver=2.22.0
 pkgver=${_pkgver/-/.}
 pkgrel=1
 pkgdesc='World of Warcraft addon updater (system Electron)'
@@ -17,7 +17,7 @@ depends=(
     $_electron
 )
 makedepends=(
-    'nodejs-lts-iron' # may fail with latest nodejs, use lts
+    'nodejs-lts-krypton' # may fail with latest nodejs, use lts
     'npm'
     'asar'
     'imagemagick'
@@ -29,7 +29,7 @@ source=(
     wowup-native.desktop
     run_wowup-native.sh
 )
-sha256sums=('217b44662b7136473071a9b8073ea7c2018ddec82e050e023bfdab70d0bae481'
+sha256sums=('60724a35936c028a6711b613e441bbb0b13d3d7ae50d4628f29464648568fbe3'
             '6492656d15dc74254189767f92a3d6d73ee21d2de952ae8586a40330dc0b6ef3'
             '371d0e19917b031911ac5503e01e19170988230fb793f68e42eb15e4d1cfb97c'
             '76ebf12e022e15075a6a3824731a8288acbc6a4e1f69f6bd0fa3591d6f658656'
@@ -57,7 +57,11 @@ prepare() {
 }
 
 build() {
-    cd "$_pkgname-$_pkgver/wowup-electron"
+    cd "$srcdir/$_pkgname-$_pkgver/wowup-lib"
+
+    npm install
+
+    cd "$srcdir/$_pkgname-$_pkgver/wowup-electron"
 
     # Angular may ask for sharing anonymous usage data during `npm install`.
     # Say “no” to it.
